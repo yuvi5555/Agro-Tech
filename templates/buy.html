@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background: #f4f4f4; }
+        header, footer { background: rgba(255, 255, 255, 0.9); padding: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        nav ul { list-style: none; display: flex; justify-content: center; padding: 0; }
+        nav ul li { margin: 0 15px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: 600; transition: color 0.3s; }
+        nav ul li a:hover { color: #218838; }
+        .container { width: 90%; margin: auto; padding: 20px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .product { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center; }
+        .product img { width: 100%; border-radius: 10px; }
+        .buy-btn { display: block; margin-top: 10px; padding: 10px; background: #218838; color: white; text-decoration: none; border-radius: 5px; }
+        .buy-btn:hover { background: #19692c; }
+        .form-popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); border-radius: 10px; }
+        .form-popup input, .form-popup button { width: 100%; padding: 10px; margin: 5px 0; }
+        .close-btn { background: red; color: white; cursor: pointer; }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="product-grid" id="product-list"></div>
+    </div>
+    
+    <div class="form-popup" id="purchaseForm">
+        <h2>Purchase Form</h2>
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="text" id="address" placeholder="Your Address" required>
+        <input type="text" id="contact" placeholder="Your Contact" required>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <button onclick="saveToExcel()">Submit</button>
+        <button class="close-btn" onclick="closeForm()">Cancel</button>
+    </div>
+
+    <footer>
+        <p>© 2024 Agro Store. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const products = [
+            { name: "Apple", img: "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg", price: 120 },
+            { name: "Banana", img: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg", price: 60 },
+            { name: "Carrot", img: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Carrot.jpg", price: 50 },
+            { name: "Tomato", img: "https://upload.wikimedia.org/wikipedia/commons/8/89/Tomato_je.jpg", price: 40 },
+            { name: "Potato", img: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Patates.jpg", price: 30 },
+            { name: "Onion", img: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Onion.jpg", price: 45 },
+            { name: "Wheat", img: "https://upload.wikimedia.org/wikipedia/commons/d/d2/Wheat_close-up.JPG", price: 55 },
+            { name: "Rice", img: "https://upload.wikimedia.org/wikipedia/commons/6/67/Rice_grains.jpg", price: 70 },
+            { name: "Mango", img: "https://upload.wikimedia.org/wikipedia/commons/9/90/Hapus_Mango.jpg", price: 150 },
+            { name: "Grapes", img: "https://upload.wikimedia.org/wikipedia/commons/0/02/Grape.png", price: 100 },
+            { name: "Peach", img: "https://upload.wikimedia.org/wikipedia/commons/8/89/Peach_Fruit.jpg", price: 130 },
+            { name: "Pear", img: "https://upload.wikimedia.org/wikipedia/commons/0/07/Pair_of_Pears.jpg", price: 90 },
+            { name: "Kiwi", img: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Kiwi_aka.jpg", price: 200 },
+            { name: "Coconut", img: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Coconut_open.JPG", price: 50 },
+            { name: "Corn", img: "https://upload.wikimedia.org/wikipedia/commons/2/27/Corncobs.jpg", price: 80 }
+        ];
+        
+        const productList = document.getElementById("product-list");
+        productList.innerHTML = products.map(product => `
+            <div class="product">
+                <img src="${product.img}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p>Price: ₹${product.price}/kg</p>
+                <button class="buy-btn" onclick="openForm('${product.name}', ${product.price})">Buy Now</button>
+            </div>
+        `).join('');
+        
+        function openForm(product, price) {
+            document.getElementById("purchaseForm").style.display = "block";
+            document.getElementById("purchaseForm").dataset.product = product;
+            document.getElementById("purchaseForm").dataset.price = price;
+        }
+        
+        function closeForm() {
+            document.getElementById("purchaseForm").style.display = "none";
+        }
+        
+        function saveToExcel() {
+            let name = document.getElementById("name").value;
+            let address = document.getElementById("address").value;
+            let contact = document.getElementById("contact").value;
+            let quantity = document.getElementById("quantity").value;
+            let product = document.getElementById("purchaseForm").dataset.product;
+            let price = document.getElementById("purchaseForm").dataset.price;
+            
+            let data = [["Name", "Address", "Contact", "Product", "Quantity", "Total Price"],
+                        [name, address, contact, product, quantity, price * quantity]];
+            let ws = XLSX.utils.aoa_to_sheet(data);
+            let wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Orders");
+            XLSX.writeFile(wb, "purchase_data.xlsx");
+            
+            alert("Purchase saved!");
+            closeForm();
+        }
+    </script>
+
+</body>
+</html>

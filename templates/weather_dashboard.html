@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-image: url('https://media.istockphoto.com/id/1280715716/photo/germany-stuttgart-magical-orange-sunset-sky-above-ripe-grain-field-nature-landscape-in-summer.jpg?s=612x612&w=0&k=20&c=TukToGq-LkmpxvEXEomC3d11prf_hDRSwA7pYsLYG50=');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+        }
+
+        /* Header and Navigation */
+        header {
+            background: rgba(255,255,255,0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li { margin: 0 15px; }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover { color: #2d962d; }
+
+        main {
+            max-width: 900px;
+            margin: 140px auto 50px auto;
+            padding: 25px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+
+        h1, h2 { text-align: center; margin-bottom: 20px; }
+
+        form {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        form button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        form button:hover { background-color: #45a049; }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .weather-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .weather-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0,0,0,0.5);
+        }
+        .weather-card h3 { font-size: 20px; margin-bottom: 5px; }
+        .weather-card p { font-size: 14px; opacity: 0.85; }
+        .alert-text {
+            color: #FF3B30;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .remove-btn {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #FF3B30;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .remove-btn:hover { background-color: #e62e20; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Navigation -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Add City</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add City</button>
+        </form>
+
+        <hr>
+
+        <h2>Weather Reports & Alerts</h2>
+        {% if alerts %}
+            <div class="weather-grid">
+                {% for item in alerts %}
+                    <div class="weather-card">
+                        <h3>{{ item.city }}</h3>
+                        <p>Location: {{ item.weather.location }}</p>
+                        <p>Temperature: {{ item.weather.temperature }}°C</p>
+                        <p>Wind Speed: {{ item.weather.windspeed }} km/h</p>
+                        <p>Wind Direction: {{ item.weather.winddirection }}°</p>
+                        {% comment %} <p>Time: {{ item.weather.time }}</p> {% endcomment %}
+                        {% if item.alert %}
+                            <p class="alert-text">{{ item.alert }}</p>
+                        {% endif %}
+
+                        <!-- Remove City Button -->
+                        <form method="post" action="{% url 'remove_city' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="remove-btn">Remove</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h3 style="text-align:center; margin-top:20px;">No weather data available.</h3>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        © 2025 Agro Services. All rights reserved. | Empowering Farmers with Smart Solutions.
+    </footer>
+
+</body>
+</html>

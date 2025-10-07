@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Agro Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+                url('https://media.istockphoto.com/id/1280715716/photo/germany-stuttgart-magical-orange-sunset-sky-above-ripe-grain-field-nature-landscape-in-summer.jpg?s=612x612&w=0&k=20&c=TukToGq-LkmpxvEXEomC3d11prf_hDRSwA7pYsLYG50=') 
+                no-repeat center center/cover;
+            color: #fff;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #28a745;
+        }
+
+        .about-us {
+            padding: 150px 20px;
+            text-align: center;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .about-text {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .about-text h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .about-img {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .about-img img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-text h2 {
+                font-size: 28px;
+            }
+
+            .about-text p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                {% comment %} <li><a href="{% url 'signin' %}">Sign In</a></li> {% endcomment %}
+            </ul>
+        </nav>
+    </header>
+
+    <section class="about-us">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Our Story</h2>
+                <p>At Agro Services, we believe that modern agriculture is the backbone of global sustainability. Since
+                    our inception in 2010, we have worked tirelessly to provide the best solutions for farmers and agribusinesses. 
+                    We specialize in high-quality fertilizers, farm and cattle insurance, and machinery rentals. Our goal is to make agricultural practices efficient, sustainable, and profitable.</p>
+            </div>
+            <div class="about-img">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_f9MaUfK-tExTeW5ZCEbzA98YpTjGnnXFOg&s" alt="Farmers working in the field">
+            </div>s
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Agro Services. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+    </footer>
+</body>
+
+</html>

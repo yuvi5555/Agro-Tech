@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fertilizer Recommendation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-image: url('https://media.istockphoto.com/id/1280715716/photo/germany-stuttgart-magical-orange-sunset-sky-above-ripe-grain-field-nature-landscape-in-summer.jpg?s=612x612&w=0&k=20&c=TukToGq-LkmpxvEXEomC3d11prf_hDRSwA7pYsLYG50=');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #2d962d;
+        }
+
+        main {
+            margin-top: 120px;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #2c7a7b;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            background: linear-gradient(45deg, #28a745, #218838);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #218838, #19692c);
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f0fff4;
+            border-left: 6px solid #38a169;
+            color: #22543d;
+        }
+
+        .result h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #2f855a;
+            font-size: 18px;
+        }
+
+        .advice {
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .fertilizers {
+            padding: 12px;
+            background: #e6fffa;
+            border: 1px dashed #319795;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #234e52;
+        }
+
+        footer {
+            margin-top: 50px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>🌱 Fertilizer Recommendation System</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Get Recommendation</button>
+            </form>
+
+            {% if result %}
+            <div class="result">
+                <h3>Result:</h3>
+                <div class="advice">
+                    {{ result|linebreaksbr|slice:":80" }}
+                </div>
+                <div class="fertilizers">
+                    <br>
+                    <strong>{{ result|linebreaksbr|slice:"80:" }}</strong>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Agro Services. All rights reserved. | Empowering Farmers with Smart Solutions.</p>
+    </footer>
+</body>
+</html>

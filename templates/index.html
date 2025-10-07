@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agro Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-image: url('https://media.istockphoto.com/id/1280715716/photo/germany-stuttgart-magical-orange-sunset-sky-above-ripe-grain-field-nature-landscape-in-summer.jpg?s=612x612&w=0&k=20&c=TukToGq-LkmpxvEXEomC3d11prf_hDRSwA7pYsLYG50=');
+      background-size: cover; background-position: center; background-attachment: fixed;
+      color: #ffffff; text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    }
+    header { background: rgba(255,255,255,0.9); position: fixed; width: 100%; top: 0; left: 0;
+      padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+    nav { display: flex; justify-content: center; }
+    nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
+    nav ul li { margin: 0 15px; }
+    nav ul li a { text-decoration: none; color: #333; font-weight: 600; font-size: 16px; transition: color 0.3s ease; }
+    nav ul li a:hover { color: #2d962d; }
+    main { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;
+      text-align: center; padding: 20px; }
+    main h1 { font-size: 60px; font-weight: 700; margin-bottom: 20px; }
+    main p { font-size: 20px; max-width: 700px; margin-bottom: 30px; line-height: 1.6; }
+    .view-rates-btn {
+      display: inline-block; background: linear-gradient(45deg, #28a745, #218838); color: #fff;
+      padding: 15px 40px; font-size: 18px; font-weight: bold; text-transform: uppercase;
+      letter-spacing: 1px; text-decoration: none; border-radius: 30px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3); transition: all 0.3s ease-in-out;
+    }
+    .view-rates-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 20px rgba(0,0,0,0.4);
+      background: linear-gradient(45deg, #218838, #19692c); }
+    .visual img { width: 50%; border-radius: 15px; margin-top: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    footer { background: rgba(0,0,0,0.8); color: white; text-align: center; padding: 20px; }
+    footer p { font-size: 14px; }
+
+    /* Floating Voice Button */
+    #voice-btn {
+      position: fixed; bottom: 20px; right: 20px; background: #007bff; color: white;
+      border-radius: 50%; width: 60px; height: 60px; font-size: 24px; text-align: center;
+      line-height: 60px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); z-index: 2000;
+    }
+
+    /* Language Modal */
+    #language-modal {
+      display: none; position: fixed; bottom: 100px; right: 20px; background: white; color: black;
+      padding: 20px; border: 2px solid #007bff; border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 3000;
+    }
+    #language-modal select, #language-modal button { margin: 5px 0; padding: 8px 12px; font-size: 14px; }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'services' %}">Services</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Welcome to Agro Services!</h1>
+    <p>
+      We are dedicated to providing essential services to farmers, including fertilizer distribution,
+      insurance for crops and livestock, and rental services for agricultural machinery. Our goal is to
+      enhance productivity and sustainability in farming communities while ensuring farmers have access
+      to the best resources and support.
+    </p>
+    <a href="{% url 'test' %}" class="view-rates-btn">View Bajaar Samiti Rates</a>
+
+    <div class="visual">
+      <img src="https://media.istockphoto.com/id/1280715716/photo/germany-stuttgart-magical-orange-sunset-sky-above-ripe-grain-field-nature-landscape-in-summer.jpg?s=612x612&w=0&k=20&c=TukToGq-LkmpxvEXEomC3d11prf_hDRSwA7pYsLYG50=" alt="Agricultural Field">
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Agro Services. All rights reserved. | Trusted by individuals and teams at the world's best companies.</p>
+  </footer>
+
+  <!-- Floating Button -->
+  <div id="voice-btn">🔊</div>
+
+  <!-- Language Modal -->
+  <div id="language-modal">
+    <h3>Choose Language</h3>
+    <select id="lang-select">
+      <option value="en">English</option>
+      <option value="hi">हिंदी</option>
+      <option value="mr">मराठी</option>
+    </select>
+    <br><br>
+    <button id="speak-btn">Translate & Read</button>
+    <button id="close-btn">Close</button>
+  </div>
+
+  <!-- Google Translate Container (hidden) -->
+  <div id="google_translate_element" style="display:none;"></div>
+
+  <!-- Scripts -->
+  <script>
+    const voiceBtn = document.getElementById("voice-btn");
+    const modal = document.getElementById("language-modal");
+    const speakBtn = document.getElementById("speak-btn");
+    const closeBtn = document.getElementById("close-btn");
+    const langSelect = document.getElementById("lang-select");
+    let speech = new SpeechSynthesisUtterance();
+
+    // Open modal
+    voiceBtn.addEventListener("click", () => {
+      modal.style.display = "block";
+    });
+
+    // Close modal
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    // Translate + Speak
+    speakBtn.addEventListener("click", () => {
+      let lang = langSelect.value;
+
+      // Trigger Google Translate
+      let select = document.querySelector(".goog-te-combo");
+      if (select) {
+        select.value = lang;
+        select.dispatchEvent(new Event("change"));
+      }
+
+      // Wait for translation to finish then speak
+      setTimeout(() => {
+        let text = document.body.innerText;
+        speech.lang = (lang === "hi") ? "hi-IN" : (lang === "mr") ? "mr-IN" : "en-US";
+        speech.text = text;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(speech);
+      }, 1500);
+    });
+  </script>
+
+  <!-- Google Translate Script -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        { pageLanguage: 'en', includedLanguages: 'en,hi,mr' },
+        'google_translate_element'
+      );
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

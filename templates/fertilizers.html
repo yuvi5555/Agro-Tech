@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertilizers for Indian Farming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            margin: 0;
+        }
+
+        header nav ul li {
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        header nav ul li a:hover {
+            color: #28a745;
+        }
+
+        .hero {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+                url('https://images.pexels.com/photos/1005058/pexels-photo-1005058.jpeg?auto=compress&cs=tinysrgb&w=1600') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+        }
+
+        .fertilizers,
+        .suggestions,
+        .about {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .fertilizer-cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        form label {
+            display: block;
+            margin: 15px 0 5px;
+        }
+
+        form input,
+        form select,
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        form button {
+            background: #28a745;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background: #218838;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                {% comment %} <li><a href="{% url 'signin' %}">Sign In</a></li> {% endcomment %}
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Fertilizers for Indian Farming</h1>
+            <p>Explore the best fertilizers to boost your crop yield and improve soil health. Let us help you grow!</p>
+        </div>
+    </section>
+
+    <section id="fertilizers" class="fertilizers">
+        <h2>Popular Fertilizers in India</h2>
+        <div class="fertilizer-cards">
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200" alt="Urea">
+                <h3>Urea</h3>
+                <p>Urea is a nitrogen-rich fertilizer commonly used for wheat, rice, and maize.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200" alt="DAP">
+                <h3>Di-Ammonium Phosphate (DAP)</h3>
+                <p>DAP is widely used for its phosphorus content and is ideal for cereals and vegetables.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200" alt="Potash">
+                <h3>Potash</h3>
+                <p>Potash is essential for crops like sugarcane, potatoes, and cotton for improving quality.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200" alt="Compost">
+                <h3>Organic Compost</h3>
+                <p>Enrich your soil with compost for sustainable farming and better crop growth.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="suggestions" class="suggestions">
+        <h2>Fertilizer Suggestions</h2>
+        <form id="fertilizer-form">
+            <label for="crop">Crop Name:</label>
+            <input type="text" id="crop" name="crop" placeholder="Enter crop name" required>
+
+            <label for="soil">Soil Type:</label>
+            <select id="soil" name="soil" required>
+                <option value="">Select Soil Type</option>
+                <option value="clay">Clay</option>
+                <option value="sandy">Sandy</option>
+                <option value="loam">Loam</option>
+            </select>
+
+            <label for="region">Region:</label>
+            <input type="text" id="region" name="region" placeholder="Enter your region" required>
+
+            <button type="submit">Get Suggestions</button>
+        </form>
+        <div id="result"></div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Us</h2>
+        <p>We are dedicated to helping farmers across India find the best fertilizers for their crops and soil types. Our goal is to support sustainable agriculture through education and innovation.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Fertilizer Guide. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('fertilizer-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const crop = document.getElementById('crop').value.toLowerCase();
+            const soil = document.getElementById('soil').value.toLowerCase();
+            const region = document.getElementById('region').value.toLowerCase();
+
+            let suggestion = '';
+
+            if (crop === 'wheat' || crop === 'rice') {
+                suggestion = 'Urea and DAP are recommended.';
+            } else if (crop === 'potato' || soil === 'sandy') {
+                suggestion = 'Potash is highly effective.';
+            } else if (soil === 'clay') {
+                suggestion = 'Use compost to improve soil structure.';
+            } else {
+                suggestion = 'Contact your local agricultural expert for personalized advice.';
+            }
+
+            document.getElementById('result').innerHTML = `<p><strong>Suggestion:</strong> ${suggestion}</p>`;
+        });
+    </script>
+</body>
+
+</html>
